@@ -9,8 +9,8 @@ Two source files are provided from St. Lucie County, Florida:
   of addresses to compare against the cleaned StAddy file.
 
 The goal is to clean the StAddy export so its columns match the St. Lucie file
-and then report which addresses in `ST LUCIE_2025-07-01.csv` are missing from the
-export.
+and then find all addresses that appear in the export but do not yet exist in
+`ST LUCIE_2025-07-01.csv`.
 
 ## Cleaning workflow
 
@@ -29,7 +29,7 @@ export.
 3. Create any remaining St. Lucie columns (`ZIP+4`, `LAT`, `LONG`, `FEATID`, `COUNTYID`, `COUNTY`, `FIRECODE`, `POLCODE`, `EFFDATE`, `TDTCODE`) and fill them with `NA` where not supplied. `COUNTYID` is set to `111` and `COUNTY` is "St. Lucie".
 4. Reorder the columns to match the existing CSV and remove duplicate rows.
 5. Compare the cleaned records with `ST LUCIE_2025-07-01.csv` to identify rows
-   present in the latter that do not appear in the StAddy export.
+   present in the StAddy export that do not appear in the existing file.
 
 ## Required tools
 
@@ -42,11 +42,12 @@ Install dependencies with `pip install -r requirements.txt`.
 
 Run the provided `merge_addresses.py` script from the repository root. It takes
 the StAddy export followed by the St. Lucie CSV and writes a list of addresses
-from the latter that are not found in the cleaned StAddy data:
+from the StAddy file that are not found in the existing St. Lucie data:
 
 ```bash
-python3 merge_addresses.py "compressed_data (1).csv.gz" "ST LUCIE_2025-07-01.csv" missing.csv
+python3 merge_addresses.py "compressed_data (1).csv.gz" "ST LUCIE_2025-07-01.csv" PointMatch.csv
 ```
 
-`missing.csv` will contain only those rows from `ST LUCIE_2025-07-01.csv` that do
-not appear in the cleaned export.
+`PointMatch.csv` will contain only those rows from the cleaned StAddy export that
+are not already listed in `ST LUCIE_2025-07-01.csv` and will follow the same
+column order.

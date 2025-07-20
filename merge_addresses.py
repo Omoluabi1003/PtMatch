@@ -68,32 +68,32 @@ def standardize_gis(df: pd.DataFrame) -> pd.DataFrame:
     return df[STLUCIE_COLUMNS]
 
 
-def find_missing(staddy_csv: str, stlucie_csv: str, output_csv: str) -> None:
-    """Write rows from ``stlucie_csv`` that are absent in ``staddy_csv``."""
+def find_new_points(staddy_csv: str, stlucie_csv: str, output_csv: str) -> None:
+    """Write rows from ``staddy_csv`` that are absent in ``stlucie_csv``."""
     staddy = load_csv(staddy_csv)
     staddy = standardize_gis(staddy)
 
     stlucie = load_csv(stlucie_csv)
 
-    merged = stlucie.merge(
-        staddy[ADDRESS_KEY_COLUMNS].drop_duplicates(),
+    merged = staddy.merge(
+        stlucie[ADDRESS_KEY_COLUMNS].drop_duplicates(),
         on=ADDRESS_KEY_COLUMNS,
         how="left",
         indicator=True,
     )
-    missing = merged[merged["_merge"] == "left_only"][STLUCIE_COLUMNS]
-    missing.to_csv(output_csv, index=False)
+    new_records = merged[merged["_merge"] == "left_only"][STLUCIE_COLUMNS]
+    new_records.to_csv(output_csv, index=False)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description=(
-            "Clean a StAddy export and list addresses in the St. Lucie file"
-            " that do not appear in it"
+            "Clean a StAddy export and output addresses from it that "
+            "are not already in the St. Lucie CSV"
         )
     )
     parser.add_argument("staddy_csv", help="StAddy export (CSV or .gz)")
     parser.add_argument("stlucie_csv", help="Existing St. Lucie CSV file")
-    parser.add_argument("output_csv", help="Output CSV path for missing addresses")
+    parser.add_argument("output_csv", help="Output CSV path for new addresses")
     args = parser.parse_args()
-    find_missing(args.staddy_csv, args.stlucie_csv, args.output_csv)
+    find_new_points(args.staddy_csv, args.stlucie_csv, args.output_csv)
