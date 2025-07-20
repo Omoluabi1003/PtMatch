@@ -2,9 +2,26 @@ import argparse
 import pandas as pd
 
 STLUCIE_COLUMNS = [
-    'NUMBER', 'PREDIR', 'STNAME', 'STSUFFIX', 'POSTDIR', 'UNITTYPE',
-    'UNITNUM', 'MAILCITY', 'ZIP', 'ZIP+4', 'LAT', 'LONG', 'FEATID',
-    'COUNTYID', 'COUNTY', 'JURISDICTION', 'FIRECODE', 'POLCODE', 'EFFDATE', 'TDTCODE'
+    'NUMBER',
+    'PREDIR',
+    'STNAME',
+    'STSUFFIX',
+    'POSTDIR',
+    'UNITTYPE',
+    'UNITNUM',
+    'MAILCITY',
+    'ZIP',
+    'ZIP+4',
+    'LAT',
+    'LONG',
+    'FEATID',
+    'COUNTYID',
+    'COUNTY',
+    'JURISDICTION',
+    'FIRECODE',
+    'POLCODE',
+    'EFFDATE',
+    'TDTCODE',
 ]
 
 RENAME_MAP = {
@@ -22,12 +39,12 @@ RENAME_MAP = {
 
 
 def load_gis_csv(path: str) -> pd.DataFrame:
-    """Load the gzipped GIS export."""
-    return pd.read_csv(path, compression='gzip')
+    """Load the gzipped GIS export as strings."""
+    return pd.read_csv(path, compression='gzip', dtype=str, low_memory=False)
 
 
 def standardize_gis(df: pd.DataFrame) -> pd.DataFrame:
-    """Convert GIS columns to the St. Lucie format."""
+    """Rename fields and provide missing St. Lucie columns."""
     df = df.rename(columns=RENAME_MAP)
     for col in STLUCIE_COLUMNS:
         if col not in df.columns:
@@ -38,11 +55,11 @@ def standardize_gis(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def merge_datasets(original_csv: str, new_csv: str, output_csv: str) -> None:
-    df_old = pd.read_csv(original_csv)
+    df_old = pd.read_csv(original_csv, dtype=str, low_memory=False)
     df_new = load_gis_csv(new_csv)
     df_new = standardize_gis(df_new)
     merged = pd.concat([df_old, df_new], ignore_index=True)
-    merged.drop_duplicates(inplace=True)
+    merged.drop_duplicates(subset=STLUCIE_COLUMNS, inplace=True)
     merged.to_csv(output_csv, index=False)
 
 

@@ -1,16 +1,16 @@
 # Address Dataset Preparation
 
-This repository contains two address datasets from St. Lucie County, Florida:
+Two source files are provided from St. Lucie County, Florida:
 
-- **`ST LUCIE_2025-07-01.csv`** – Base address file in the St. Lucie format with 20 columns (number, street name, lat/lon, etc.).
-- **`compressed_data (1).csv.gz`** – A gzipped export from the county GIS system with 55 columns.
+- **`ST LUCIE_2025-07-01.csv`** – the existing master list of addresses already in the St. Lucie column layout.
+- **`compressed_data (1).csv.gz`** – a new export from the county GIS system that contains additional records and many extra fields.
 
-The goal is to combine the new GIS records with the existing St. Lucie table while retaining the original column layout.
+The merge process converts the GIS export to the same column set as the master file and appends the new rows.
 
 ## Cleaning workflow
 
 1. Decompress and load `compressed_data (1).csv.gz` using pandas.
-2. Rename GIS columns to the St. Lucie column names:
+2. Rename GIS columns to the St. Lucie column names:
    - `addrnum` → `NUMBER`
    - `roadpredir` → `PREDIR`
    - `roadname` → `STNAME`
@@ -28,9 +28,9 @@ The goal is to combine the new GIS records with the existing St. Lucie table whi
 ## Required tools
 
 - Python 3
-- pandas
+- pandas (`requirements.txt` lists the dependency)
 
-Install pandas with `pip install pandas` if needed.
+Install dependencies with `pip install -r requirements.txt`.
 
 ## Running the merge script
 
@@ -40,4 +40,5 @@ Run the provided `merge_addresses.py` script from the repository root:
 python3 merge_addresses.py "ST LUCIE_2025-07-01.csv" "compressed_data (1).csv.gz" output.csv
 ```
 
-The script writes a merged file called `output.csv` containing all original St. Lucie rows followed by the cleaned GIS records.
+The script writes `output.csv` containing all original rows followed by the
+cleaned GIS records in the same St. Lucie column order.
