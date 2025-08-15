@@ -15,7 +15,6 @@ columns_to_keep = {
     'unitid': 'UNITNUM',
     'postcomm': 'MAILCITY',
     'postal': 'ZIP',
-    'siteaddid': 'FEATID',
     'County': 'COUNTY',
     'municipality': 'JURISDICTION',
     'created_date': 'EFFDATE'
@@ -24,6 +23,23 @@ columns_to_keep = {
 # Read the CSV and select necessary columns
 site_df = pd.read_csv(raw_file, dtype=str)[list(columns_to_keep.keys())]
 site_df.rename(columns=columns_to_keep, inplace=True)
+
+# Convert all fields to uppercase
+site_df = site_df.applymap(lambda x: x.upper() if isinstance(x, str) else x)
+
+# Trim EFFDATE to date-only format
+site_df['EFFDATE'] = (
+    pd.to_datetime(site_df['EFFDATE'], errors='coerce')
+    .dt.date.astype('string')
+    .fillna('')
+)
+
+# Populate constant identifiers
+site_df['FEATID'] = '2403646'
+site_df['COUNTYID'] = '111'
+site_df['COUNTY'] = 'ST. LUCIE'
+site_df['FIRECODE'] = '73'
+site_df['POLCODE'] = '377'
 
 # Ensure all expected columns exist
 all_columns = ['NUMBER', 'PREDIR', 'STNAME', 'STSUFFIX', 'POSTDIR',
