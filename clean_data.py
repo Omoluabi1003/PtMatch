@@ -1,6 +1,5 @@
 import pandas as pd
 import zipfile
-import os
 
 # Define the path to the zip file and the target CSV file name
 zip_filename = 'Unincorporated-Geocoded.zip'
@@ -28,18 +27,39 @@ columns_to_keep = {
     'USER_FIRECODE': 'FIRECODE',
     'USER_POLCODE': 'POLCODE',
     'USER_EFFDATE': 'EFFDATE',
-    'USER_TDTCODE': 'TDTCODE'
+    'USER_TDTCODE': 'TDTCODE',
 }
+
+FIXED_CODES = {
+    'FEATID': '2403646',
+    'COUNTYID': '111',
+    'COUNTY': 'ST. LUCIE',
+    'FIRECODE': '73',
+    'POLCODE': '377',
+}
+
+
+def to_upper(value: str) -> str:
+    return value.upper() if isinstance(value, str) else value
+
 
 # Open the zip file
 with zipfile.ZipFile(zip_filename, 'r') as zf:
     csv_in_zip = zf.namelist()[0]
     with zf.open(csv_in_zip) as f:
-        reader = pd.read_csv(f, chunksize=10000, usecols=columns_to_keep.keys())
+        reader = pd.read_csv(f, chunksize=10000, usecols=columns_to_keep.keys(), dtype=str)
 
         first_chunk = True
         for chunk in reader:
             chunk.rename(columns=columns_to_keep, inplace=True)
+            chunk = chunk.applymap(to_upper)
+            chunk['EFFDATE'] = (
+                pd.to_datetime(chunk['EFFDATE'], errors='coerce')
+                .dt.date.astype('string')
+                .fillna('')
+            )
+            for col, val in FIXED_CODES.items():
+                chunk[col] = val
             if first_chunk:
                 chunk.to_csv(csv_filename, index=False, mode='w', header=True)
                 first_chunk = False
