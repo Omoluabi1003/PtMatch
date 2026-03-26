@@ -1,43 +1,63 @@
-# Address Dataset Preparation
+# PtMatch – GIS Point Matching & Address Validation Engine
 
-This repository contains two address datasets from St. Lucie County, Florida:
+## Overview
+PtMatch is an enterprise GIS automation tool designed to improve spatial data accuracy by validating addresses and aligning point datasets across multiple sources.
 
-- **`ST LUCIE_2025-07-01.csv`** – Base address file in the St. Lucie format with 20 columns (number, street name, lat/lon, etc.).
-- **`compressed_data (1).csv.gz`** – A gzipped export from the county GIS system with 55 columns.
+Originally developed to support real-world GIS data alignment and validation workflows in public-sector environments, this tool addresses a critical challenge in GIS operations: inconsistent or misaligned spatial records that impact permitting, planning, and operational decision-making.
 
-The goal is to combine the new GIS records with the existing St. Lucie table while retaining the original column layout.
+---
 
-## Cleaning workflow
+## Business Problem
+Organizations managing large GIS datasets often encounter:
+- Misaligned address points across datasets  
+- Duplicate or inconsistent spatial records  
+- Manual QA/QC processes that are time-consuming and error-prone  
 
-1. Decompress and load `compressed_data (1).csv.gz` using pandas.
-2. Rename GIS columns to the St. Lucie column names:
-   - `addrnum` → `NUMBER`
-   - `roadpredir` → `PREDIR`
-   - `roadname` → `STNAME`
-   - `roadtype` → `STSUFFIX`
-   - `roadpostdir` → `POSTDIR`
-   - `unittype` → `UNITTYPE`
-   - `unitid` → `UNITNUM`
-   - `postcomm` → `MAILCITY`
-   - `postal` → `ZIP`
-   - `municipality` → `JURISDICTION`
-3. Create any remaining St. Lucie columns (`ZIP+4`, `LAT`, `LONG`, `FEATID`, `COUNTYID`, `COUNTY`, `FIRECODE`, `POLCODE`, `EFFDATE`, `TDTCODE`) and fill them with `NA` where not supplied. `COUNTYID` is set to `111` and `COUNTY` is "St. Lucie".
-4. Reorder the columns to match the existing CSV and remove duplicate rows.
-5. Concatenate the cleaned GIS records with `ST LUCIE_2025-07-01.csv`.
+These challenges reduce operational efficiency and compromise data reliability.
 
-## Required tools
+---
 
-- Python 3
-- pandas
+## Solution
+PtMatch automates:
+- Address validation  
+- Point-to-point spatial matching  
+- Data alignment across datasets  
 
-Install pandas with `pip install pandas` if needed.
+This enables organizations to maintain high-confidence spatial datasets with minimal manual intervention.
 
-## Running the merge script
+---
 
-Run the provided `merge_addresses.py` script from the repository root:
+## Key Capabilities
+- Automated address validation workflows  
+- Spatial point matching across datasets  
+- Data cleansing and standardization  
+- Scalable processing for large GIS datasets  
 
-```bash
-python3 merge_addresses.py "ST LUCIE_2025-07-01.csv" "compressed_data (1).csv.gz" output.csv
-```
+---
 
-The script writes a merged file called `output.csv` containing all original St. Lucie rows followed by the cleaned GIS records.
+## Technology Stack
+- Python (ArcPy / GIS automation)  
+- CSV-based data processing workflows  
+- ETL-driven validation logic  
+
+---
+
+## Sample Data
+This repository includes:
+- SiteAddress datasets  
+- PointMatch outputs  
+- Cleaned and standardized spatial records  
+
+---
+
+## Impact
+- Reduces manual QA/QC effort  
+- Improves spatial accuracy and consistency  
+- Enhances decision-making through reliable GIS data  
+
+---
+
+## Future Enhancements
+- Integration with ArcGIS Enterprise workflows  
+- API-based validation services  
+- Real-time data processing pipelines  
