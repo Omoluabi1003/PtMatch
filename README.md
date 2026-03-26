@@ -7,6 +7,8 @@ PtMatch is an enterprise GIS automation tool designed to improve spatial data ac
 
 Originally developed to support real-world GIS data alignment and validation workflows in public-sector environments, this tool addresses a critical challenge in GIS operations: inconsistent or misaligned spatial records that impact permitting, planning, and operational decision-making.
 
+This approach reflects a broader methodology of transforming fragmented spatial data into structured, reliable, and decision-ready GIS systems.
+
 ---
 
 ## Business Problem
