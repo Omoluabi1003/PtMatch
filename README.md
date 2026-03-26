@@ -1,5 +1,7 @@
 # PtMatch – GIS Point Matching & Address Validation Engine
 
+> Enterprise GIS automation solution designed for large-scale spatial data validation and alignment
+
 ## Overview
 PtMatch is an enterprise GIS automation tool designed to improve spatial data accuracy by validating addresses and aligning point datasets across multiple sources.
 
@@ -50,10 +52,18 @@ This repository includes:
 
 ---
 
+## Use Case
+Applicable in environments such as:
+- County GIS and Planning Departments  
+- Utilities and Infrastructure Management  
+- Address Management and Permitting Systems  
+
+---
+
 ## Impact
-- Reduces manual QA/QC effort  
-- Improves spatial accuracy and consistency  
-- Enhances decision-making through reliable GIS data  
+- Significantly reduces manual QA/QC effort through automation  
+- Improves spatial accuracy and dataset consistency across systems  
+- Enables faster and more reliable GIS-driven decision-making  
 
 ---
 
