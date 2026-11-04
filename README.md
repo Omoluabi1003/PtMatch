@@ -1,5 +1,19 @@
 # PtMatch – GIS Point Matching & Address Validation Engine
 
+## Project at a glance
+
+**Category:** Enterprise GIS point matching and address verification  
+**Purpose:** Align point, parcel and addressing records for data quality review  
+**Audience:** Users, engineers, reviewers and potential partners  
+**Repository:** https://github.com/Omoluabi1003/PtMatch
+
+**Implementation and evidence:** Spatial matches require authoritative source checks and exception review before operational updates.
+
+Use the sections below for the detailed product description, engineering workflow and any available setup instructions. Roadmap statements are not guarantees of deployed functionality.
+
+---
+
+
 > Enterprise GIS automation solution designed for large-scale spatial data validation and alignment
 
 ## Overview
